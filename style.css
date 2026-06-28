@@ -840,10 +840,14 @@ section {
 }
 
 .purchase-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  display: flex;
+  justify-content: center;
   margin-bottom: 48px;
+}
+
+.purchase-grid .package-card {
+  width: 100%;
+  max-width: 600px;
 }
 
 /* Package card */
@@ -1226,8 +1230,7 @@ section {
   .hero-grid,
   .intro-grid,
   .comparison-grid,
-  .materials-grid,
-  .purchase-grid {
+  .materials-grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
