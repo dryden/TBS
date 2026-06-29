@@ -2,6 +2,13 @@
    TBS Website - JavaScript
    ======================================== */
 
+// ---- GA4 Helper ----
+function gaEvent(eventName, params = {}) {
+  if (typeof gtag === 'function') {
+    gtag('event', eventName, params);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // ---- Mobile Navigation Toggle ----
   const navToggle = document.getElementById('navToggle');
@@ -115,5 +122,60 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add confetti to decorated sections
   document.querySelectorAll('.hero, .comparison, .purchase').forEach(section => {
     createConfetti(section, 10);
+  });
+
+  // ---- GA4 Button Click Tracking ----
+
+  // Hero CTA：「了解購買方式」
+  document.querySelector('a[href="#purchase"].btn-primary')
+    ?.addEventListener('click', () => {
+      gaEvent('click_cta_hero', { button_label: '了解購買方式' });
+    });
+
+  // 購買區「前往訂購」
+  document.querySelector('a[href*="famistore"]')
+    ?.addEventListener('click', () => {
+      gaEvent('click_purchase', { button_label: '前往訂購', destination: 'famistore' });
+    });
+
+  // 「加入 FB 社團」按鈕
+  document.querySelector('a[href*="facebook.com/groups"]')
+    ?.addEventListener('click', () => {
+      gaEvent('click_join_fb', { button_label: '加入 FB 社團' });
+    });
+
+  // 「部落格」連結（nav + footer）
+  document.querySelectorAll('a[href*="4514.app/blog"]').forEach(el => {
+    el.addEventListener('click', () => {
+      const location = el.closest('footer') ? 'footer' : 'nav';
+      gaEvent('click_blog', { button_label: '部落格', location });
+    });
+  });
+
+  // ---- GA4 Section View Tracking ----
+  const sectionLabels = {
+    hero:       '首頁 Hero',
+    intro:      '系統介紹',
+    comparison: '為什麼選雙桶',
+    materials:  '所需材料',
+    purchase:   '購買方式',
+    community:  '加入社團',
+  };
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        gaEvent('section_view', {
+          section_id:    id,
+          section_label: sectionLabels[id] || id,
+        });
+        sectionObserver.unobserve(entry.target); // 每個 section 只記錄一次
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('section[id]').forEach(section => {
+    sectionObserver.observe(section);
   });
 });
