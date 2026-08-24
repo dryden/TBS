@@ -567,6 +567,67 @@ section {
   font-weight: 500;
 }
 
+/* Collapsible sewage detail */
+.intro-sewage-detail {
+  margin-top: 1.5rem;
+  background: var(--card);
+  border: 2px solid var(--fg);
+  border-left: 4px solid #D97706;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--muted-fg);
+  box-shadow: var(--shadow);
+}
+
+.intro-sewage-detail summary {
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--fg);
+  transition: color 0.2s;
+}
+
+.intro-sewage-detail summary::-webkit-details-marker {
+  display: none;
+}
+
+.intro-sewage-detail summary::before {
+  content: '▶';
+  display: inline-block;
+  font-size: 0.65rem;
+  transition: transform 0.3s var(--bounce, ease);
+  flex-shrink: 0;
+  transform: translateY(-1px);
+}
+
+.intro-sewage-detail[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.intro-sewage-detail summary:hover {
+  color: #D97706;
+}
+
+.sewage-detail-body {
+  padding: 0 1.25rem 1.25rem;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  margin-top: 0;
+  padding-top: 1rem;
+}
+
+.sewage-detail-body p {
+  margin-bottom: 0.75rem;
+}
+
+.sewage-detail-body p:last-child {
+  margin-bottom: 0;
+}
+
 .intro-visual {
   position: relative;
 }
