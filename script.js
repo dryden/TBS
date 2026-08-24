@@ -178,4 +178,69 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('section[id]').forEach(section => {
     sectionObserver.observe(section);
   });
+
+  // ---- Floating Share Bar ----
+  const shareBar = document.getElementById('shareBar');
+  const shareToggle = document.getElementById('shareToggle');
+  const shareToast = document.getElementById('shareToast');
+  const pageUrl = encodeURIComponent(window.location.href);
+  const pageTitle = encodeURIComponent(document.title);
+  const shareText = encodeURIComponent('雙桶系統 — 災時如廁的最佳方案，簡單、低成本、永續！');
+
+  if (shareToggle && shareBar) {
+    // Toggle share bar open/close
+    shareToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      shareBar.classList.toggle('is-open');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!shareBar.contains(e.target)) {
+        shareBar.classList.remove('is-open');
+      }
+    });
+
+    // Set share URLs
+    const shareFb = document.getElementById('shareFb');
+    const shareThreads = document.getElementById('shareThreads');
+    const shareLine = document.getElementById('shareLine');
+    const shareIg = document.getElementById('shareIg');
+
+    if (shareFb) {
+      shareFb.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+      shareFb.addEventListener('click', () => {
+        gaEvent('click_share', { platform: 'facebook' });
+      });
+    }
+
+    if (shareThreads) {
+      shareThreads.href = `https://www.threads.net/intent/post?text=${shareText}%20${pageUrl}`;
+      shareThreads.addEventListener('click', () => {
+        gaEvent('click_share', { platform: 'threads' });
+      });
+    }
+
+    if (shareLine) {
+      shareLine.href = `https://social-plugins.line.me/lineit/share?url=${pageUrl}`;
+      shareLine.addEventListener('click', () => {
+        gaEvent('click_share', { platform: 'line' });
+      });
+    }
+
+    // Instagram: copy link to clipboard
+    if (shareIg) {
+      shareIg.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          if (shareToast) {
+            shareToast.classList.add('is-visible');
+            setTimeout(() => {
+              shareToast.classList.remove('is-visible');
+            }, 2500);
+          }
+          gaEvent('click_share', { platform: 'instagram_copy' });
+        });
+      });
+    }
+  }
 });
