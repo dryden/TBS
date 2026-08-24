@@ -581,12 +581,10 @@ section {
 }
 
 .intro-sewage-detail summary {
-  padding: 1rem 1.25rem;
+  padding: 1rem 1.25rem 1rem 2.25rem;
   cursor: pointer;
   list-style: none;
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  position: relative;
   font-weight: 500;
   color: var(--fg);
   transition: color 0.2s;
@@ -598,11 +596,11 @@ section {
 
 .intro-sewage-detail summary::before {
   content: '▶';
-  display: inline-block;
+  position: absolute;
+  left: 1rem;
+  top: 1.15rem;
   font-size: 0.65rem;
   transition: transform 0.3s var(--bounce, ease);
-  flex-shrink: 0;
-  transform: translateY(-1px);
 }
 
 .intro-sewage-detail[open] summary::before {
